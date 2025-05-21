@@ -29,8 +29,9 @@ jobs:
       - name: Compile Java files from src/
         run: |
           mkdir -p out
-          find src -name "*.java" > sources.txt
+          find src -type f -name "*.java" > sources.txt
           javac -cp lib/junit-platform-console-standalone-1.9.3.jar -d out @sources.txt
+
 
       - name: Run tests
         run: |
