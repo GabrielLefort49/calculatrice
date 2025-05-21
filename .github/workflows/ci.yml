@@ -25,14 +25,16 @@ jobs:
           curl -L -o lib/junit-platform-console-standalone-1.9.3.jar \
             https://repo1.maven.org/maven2/org/junit/platform/junit-platform-console-standalone/1.9.3/junit-platform-console-standalone-1.9.3.jar
 
-      - name: Compile Java sources (excluding module-info.java)
+      - name: Compile all Java files
         run: |
-          mkdir -p build/classes
-          find Calculatrice/src -name "*.java" ! -name "module-info.java" > sources.txt
-          javac -d build/classes @sources.txt
+          mkdir -p out
+          javac -cp libs/junit-platform-console-standalone.jar -d out *.java
 
-      - name: Run JUnit 5 tests
+      - name: Run selected tests
         run: |
-          java -jar lib/junit-platform-console-standalone-1.9.3.jar \
-            --class-path build/classes \
-            --scan-class-path
+          java -jar libs/junit-platform-console-standalone.jar \
+            --classpath out \
+            --select-class CompteBancaireTest\
+            --select-class CalculatriceTest \
+            --select-class TestProduct \
+            --select-class TabelauTest \
